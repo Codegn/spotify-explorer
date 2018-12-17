@@ -26,6 +26,13 @@ dt <- data.table::as.data.table(jsonlite::read_json(path = json_file_path, simpl
 ```
 
 ```{r}
+dt$fecha <- data.table::as.IDate(dt$endTime)
+dt$tiempo <- data.table::as.ITime(dt$endTime)
+dt$tiempoPOSIXct <- as.POSIXct(dt$tiempo)              
+```
+
+
+```{r circular barplot}
 library(tidyverse)
 # ----- This section prepare a dataframe for labels ---- #
 label_data = data.table::as.data.table(table(dt$artistName[]))
@@ -76,7 +83,19 @@ p
  
 ```
 
-G. Nicolás Villalobos Zaid
+```{r scatter}
 
+p <- qplot(fecha, as.POSIXct(tiempo, tz=""), data=dt, xlab="fecha", ylab="tiempo")
+
+p
+```
+
+```{r plotly scatter}
+p2 <- plotly::plot_ly(data = dt, x = ~fecha, y = ~tiempoPOSIXct)
+p2
+```
+
+
+G. Nicolás Villalobos Zaid
 
 
